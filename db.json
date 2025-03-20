@@ -1,8 +1,22 @@
 {
   "items": [
     {
-      "name": "asdqwe",
-      "id": "a553"
+      "id": "d190",
+      "name": "asd",
+      "description": "123",
+      "city": "asd"
+    }
+  ],
+  "users": [
+    {
+      "id": "8e97",
+      "login": "asd",
+      "password": "123"
+    },
+    {
+      "id": "bda2",
+      "login": "qwe",
+      "password": "123"
     }
   ]
 }

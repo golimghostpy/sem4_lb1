@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import './styles.css'; // Import the common CSS file
 
 const Home = () => {
   const [data, setData] = useState([]);
 
-  // Функция для загрузки данных
   const loadData = async () => {
     try {
       const response = await axios.get("http://localhost:5000/items");
@@ -16,17 +16,14 @@ const Home = () => {
     }
   };
 
-  // Загружаем данные при монтировании компонента
   useEffect(() => {
     loadData();
   }, []);
 
-  // Функция для удаления товара
   const deleteItem = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/items/${id}`);
       console.log(`Товар с id ${id} успешно удален`);
-      // Обновляем состояние данных
       setData(data.filter(item => item.id !== id));
     } catch (error) {
       console.error(`Ошибка удаления товара с id ${id}:`, error);
@@ -34,19 +31,21 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <h1>Список товаров</h1>
+    <div className="container home-container">
+      <h1>Каталог отелей</h1>
       <ul>
         {data.map(item => (
           <li key={item.id}>
-            <Link to={`/detail/${item.id}`}>{item.name}</Link>
-            <button onClick={() => deleteItem(item.id)} style={{ marginLeft: "10px" }}>
+            <Link to={`/detail/${item.id}`} style={{ display: 'flex', alignItems: 'center' }}>
+              {item.name}
+            </Link>
+            <button onClick={() => deleteItem(item.id)}>
               Удалить
             </button>
           </li>
         ))}
       </ul>
-      <Link to="/add">Добавить товар</Link>
+      <Link to="/add" className="add-link">Добавить отель</Link>
     </div>
   );
 };

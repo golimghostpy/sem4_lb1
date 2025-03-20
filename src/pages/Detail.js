@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './styles.css'; // Import the common CSS file
 
 const Detail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [itemData, setItemData] = useState({});
     const nameRef = useRef(null);
+    const ratingRef = useRef(null);
+    const descriptionRef = useRef(null);
 
     useEffect(() => {
         const loadItem = async () => {
@@ -26,12 +29,20 @@ const Detail = () => {
         if (nameRef.current && itemData) {
             nameRef.current.value = itemData.name || '';
         }
+        if (ratingRef.current && itemData) {
+            ratingRef.current.value = itemData.rating || '';
+        }
+        if (descriptionRef.current && itemData) {
+            descriptionRef.current.value = itemData.description || '';
+        }
     }, [itemData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const updatedItem = {
             name: nameRef.current.value,
+            rating: ratingRef.current.value || undefined,
+            description: descriptionRef.current.value || undefined,
         };
 
         axios.put(`http://localhost:5000/items/${id}`, updatedItem, {
@@ -46,14 +57,23 @@ const Detail = () => {
     };
 
     return (
-        <div>
-            <h1>Редактирование товара</h1>
+        <div className="container detail-container">
+            <h1>{'Информация об отеле ' + itemData.name}</h1>
             <form onSubmit={handleSubmit}>
                 <label>
                     Название:
                     <input type="text" ref={nameRef} required />
                 </label>
-                <br />
+                <label>
+                    Описание:
+                    <textarea
+                        ref={descriptionRef}
+                    ></textarea>
+                </label>
+                <label>
+                    Оценка:
+                    <input type="number" ref={ratingRef} min="1" max="5" />
+                </label>
                 <button type="submit">Сохранить</button>
             </form>
         </div>

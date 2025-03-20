@@ -1,28 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './styles.css'; // Import the common CSS file
 
 const Form = () => {
-    let name = ''; // Используем обычную переменную
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [city, setCity] = useState(''); // State for the city field
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        name = e.target.value; 
-        console.log("Текущее значение name:", name); 
+    const handleChangeName = (e) => {
+        setName(e.target.value);
+    };
+
+    const handleChangeDescription = (e) => {
+        setDescription(e.target.value);
+    };
+
+    const handleChangeCity = (e) => {
+        setCity(e.target.value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/items', { name })
+        axios.post('http://localhost:5000/items', { name, description, city })
             .then(() => navigate('/'))
             .catch(error => console.error(error));
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" onChange={handleChange} required />
-            <button type="submit">Сохранить</button>
-        </form>
+        <div className="container form-container">
+            <h1>Добавление отеля</h1>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>
+                        Название:
+                        <input type="text" value={name} onChange={handleChangeName} required />
+                    </label>
+                </div>
+                <div className="form-group">
+                    <label>
+                        Город:
+                        <input type="text" value={city} onChange={handleChangeCity} required />
+                    </label>
+                </div>
+                <div className="form-group">
+                    <label>
+                        Описание:
+                        <textarea value={description} onChange={handleChangeDescription} />
+                    </label>
+                </div>
+                <button type="submit">Сохранить</button>
+            </form>
+        </div>
     );
 };
 
