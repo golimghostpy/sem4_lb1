@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './styles.css'; // Import the common CSS file
+import './styles.css';
 
 const Detail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [itemData, setItemData] = useState({});
     const nameRef = useRef(null);
+    const cityRef = useRef(null);
     const ratingRef = useRef(null);
     const descriptionRef = useRef(null);
 
@@ -29,6 +30,9 @@ const Detail = () => {
         if (nameRef.current && itemData) {
             nameRef.current.value = itemData.name || '';
         }
+        if (cityRef.current && itemData) {
+            cityRef.current.value = itemData.city || '';
+        }
         if (ratingRef.current && itemData) {
             ratingRef.current.value = itemData.rating || '';
         }
@@ -41,6 +45,7 @@ const Detail = () => {
         e.preventDefault();
         const updatedItem = {
             name: nameRef.current.value,
+            city: cityRef.current.value,
             rating: ratingRef.current.value || undefined,
             description: descriptionRef.current.value || undefined,
         };
@@ -63,6 +68,10 @@ const Detail = () => {
                 <label>
                     Название:
                     <input type="text" ref={nameRef} required />
+                </label>
+                <label>
+                    Город:
+                    <input type="text" ref={cityRef} />
                 </label>
                 <label>
                     Описание:

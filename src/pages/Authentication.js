@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from './AuthContext'; // Убедитесь, что путь к AuthContext правильный
-import './styles.css'; // Импортируем общий CSS файл
+import { useAuth } from './AuthContext';
+import './styles.css';
 
 const Authentication = () => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login: authLogin } = useAuth(); // Используем деструктуризацию для получения функции login
+    const { login: authLogin } = useAuth();
 
     const handleLoginChange = (e) => {
         setLogin(e.target.value);
@@ -23,10 +23,11 @@ const Authentication = () => {
         e.preventDefault();
         try {
             const response = await axios.get('http://localhost:5000/users');
+            console.log(response.data);
             const user = response.data.find(user => user.login === login && user.password === password);
             if (user) {
-                authLogin(); // Обновляем состояние аутентификации
-                navigate('/'); // Перенаправляем на домашнюю страницу после успешного входа
+                authLogin();
+                navigate('/');
             } else {
                 setError('Неверный логин или пароль.');
             }
@@ -37,7 +38,7 @@ const Authentication = () => {
     };
 
     const handleRegisterClick = () => {
-        navigate('/register'); // Перенаправляем на страницу регистрации
+        navigate('/register');
     };
 
     return (

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './styles.css'; // Import the common CSS file
+import './styles.css';
 
 const Form = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [city, setCity] = useState(''); // State for the city field
+    const [city, setCity] = useState('');
     const navigate = useNavigate();
 
     const handleChangeName = (e) => {
@@ -26,6 +26,7 @@ const Form = () => {
         axios.post('http://localhost:5000/items', { name, description, city })
             .then(() => navigate('/'))
             .catch(error => console.error(error));
+        console.log("Отель", name, "был добавлен");
     };
 
     return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './styles.css'; // Import the common CSS file
+import './styles.css';
 
 const Registration = () => {
     const [login, setLogin] = useState('');
@@ -27,7 +27,7 @@ const Registration = () => {
             } else {
                 await axios.post('http://localhost:5000/users', { login, password });
                 console.log('Registration successful');
-                navigate('/login'); // Redirect to login page after successful registration
+                navigate('/login');
             }
         } catch (error) {
             console.error('Registration failed:', error);
