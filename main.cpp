@@ -143,8 +143,8 @@ private:
     vector<Application> applications;
     vector<Hotel> hotels;
     vector<RegularUser> regular_users;
-    vector<HotelOwner> hotel_owners = {{1, "asd", "asd", "владелец отеля"}};
-    vector<Admin> admins = {{1, "admin", "admin", "администратор"}};
+    vector<HotelOwner> hotel_owners = {{{1, "asd", "asd", "владелец отеля"}, {}}};
+    vector<Admin> admins = {{{1, "admin", "admin", "администратор"}, "full"}};
 };
 
 class BusinessLogic {
