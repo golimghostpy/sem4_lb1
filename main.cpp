@@ -68,18 +68,34 @@ public:
         string username;
         string password;
         string role;
+
+        User() : id(0), username(""), password(""), role("") {}
+
+        User(unsigned int id, string username, string password, string role): id(id), username(move(username)), password(move(password)), role(move(role)) {}
     };
 
     struct RegularUser : User {
         vector<Hotel> bookmarks;
+
+        RegularUser() : User(), bookmarks() {}
+
+        RegularUser(unsigned int id, string username, string password, string role, vector<Hotel> bookmarks): User(id, move(username), move(password), move(role)), bookmarks(move(bookmarks)) {}
     };
 
     struct HotelOwner : User {
         vector<Hotel> my_hotels;
+
+        HotelOwner() : User(), my_hotels() {}
+
+        HotelOwner(unsigned int id, string username, string password, string role, vector<Hotel> my_hotels): User(id, move(username), move(password), move(role)), my_hotels(move(my_hotels)) {}
     };
 
     struct Admin : User {
         string access_level;
+
+        Admin() : User(), access_level("") {}
+
+        Admin(unsigned int id, string username, string password, string role, string access_level): User(id, move(username), move(password), move(role)), access_level(move(access_level)) {}
     };
 
     void addApplication(const Application& app) {
@@ -143,8 +159,8 @@ private:
     vector<Application> applications;
     vector<Hotel> hotels;
     vector<RegularUser> regular_users;
-    vector<HotelOwner> hotel_owners = {{{1, "asd", "asd", "владелец отеля"}, {}}};
-    vector<Admin> admins = {{{1, "admin", "admin", "администратор"}, "full"}};
+    vector<HotelOwner> hotel_owners = {HotelOwner(1, "asd", "asd", "владелец отеля", {})};
+    vector<Admin> admins = {Admin(1, "admin", "admin", "администратор", "full")};
 };
 
 class BusinessLogic {
@@ -188,19 +204,21 @@ public:
 
     void createUser(const string& username, const string& password, const string& status) {
         if (status == "обычный пользователь") {
-            DataAccess::RegularUser reg_user = {
+            DataAccess::RegularUser reg_user(
                 static_cast<unsigned int>(dataAccess.getRegularUsers().size()) + 1,
                 username,
                 password,
-                status
-            };
+                status,
+                {}
+            );
             dataAccess.addRegularUser(reg_user);
         } else if (status == "владелец отеля") {
             DataAccess::HotelOwner hotel_owner = {
                 static_cast<unsigned int>(dataAccess.getHotelOwners().size()) + 1,
                 username,
                 password,
-                status
+                status,
+                {}
             };
             dataAccess.addHotelOwner(hotel_owner);
         }
